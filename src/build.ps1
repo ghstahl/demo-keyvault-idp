@@ -14,7 +14,7 @@ function Run-Script
 	$ScriptPath = "$PSScriptRoot\$script.ps1"
 	& $ScriptPath
 }
-Run-Script make-cert
+# Run-Script make-cert
 
 $Time = [System.Diagnostics.Stopwatch]::StartNew()
 
