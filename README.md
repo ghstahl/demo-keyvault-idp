@@ -20,6 +20,11 @@ Identity_AzureAd_ClientSecret=<secret>
 Identity_KeyVault=P7KeyValut
 Identity_KeyIdentifier=P7IdentityServer4SelfSigned
 ```
+## Launch the server
+```
+cd {ROOT}/src
+{ROOT}/src>docker-compose -f .\docker-compose.yml up
+```
 
 
 
