@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using IdentityModel;
 using IdentityModel.Client;
@@ -75,10 +78,31 @@ namespace demo_oidc_web_client
                     {
                         NameClaimType = JwtClaimTypes.Name,
                         RoleClaimType = JwtClaimTypes.Role,
+                    }; 
+                    options.Events.OnTicketReceived = context =>
+                    {
+
+
+                        return Task.FromResult(0);
+                    };
+                    options.Events.OnAuthorizationCodeReceived = context =>
+                    {
+
+
+                        return Task.FromResult(0);
+                    };
+                    options.Events.OnMessageReceived = context =>
+                    {
+                        
+
+                        return Task.FromResult(0);
                     };
                 });
         }
-
+        static bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        {
+            return true;
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

@@ -49,7 +49,7 @@ namespace DemoKeyVaultIDP
             identityServerBuilder.AddInMemoryApiResources(Config.GetApis());
             identityServerBuilder.AddInMemoryIdentityResources(Config.GetIdentityResources());
             identityServerBuilder.AddInMemoryClients(Config.GetClients());
-            identityServerBuilder.AddTestUsers(TestUsers.Users);
+            identityServerBuilder.AddExternalUsers(ExternalUsers.Users);
             var useKeyVaultS = Configuration["Identity:UseKeyVault"];
              
             bool useKeyVault = false;
@@ -121,7 +121,6 @@ namespace DemoKeyVaultIDP
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
