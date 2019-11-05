@@ -17,10 +17,16 @@ namespace demo_oidc_web_client
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        Host.CreateDefaultBuilder(args)
+        .ConfigureAppConfiguration((ctx, builder) =>
+        {
+            builder.AddUserSecrets<Startup>();
+            builder.AddEnvironmentVariables();
+
+        })
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>();
+        });
     }
 }

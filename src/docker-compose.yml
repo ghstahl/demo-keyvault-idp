@@ -3,13 +3,19 @@ services:
   demo-keyvault-idp:
       image: demo-keyvault-idp
       build: demo-keyvault-idp
+      networks:
+        - webproxy 
       ports:
         - 4700:80
-
-
       environment:
         - ASPNETCORE_ENVIRONMENT=Production
         - Identity__AzureAd__ClientId=${Identity_AzureAd_ClientId}
         - Identity__AzureAd__ClientSecret=${Identity_AzureAd_ClientSecret}
         - Identity__KeyVault=${Identity_KeyVault}
         - Identity__KeyIdentifier=${Identity_KeyIdentifier}
+
+ 
+ 
+networks:
+  webproxy:
+    driver: bridge

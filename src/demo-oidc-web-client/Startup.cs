@@ -31,12 +31,14 @@ namespace demo_oidc_web_client
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var authority = Configuration["oidc:authority"];
+
             services.AddControllersWithViews();
             services.AddHttpClient();
             services.AddSingleton<IDiscoveryCache>(r =>
             {
                 var factory = r.GetRequiredService<IHttpClientFactory>();
-                return new DiscoveryCache("http://localhost:4700", () => factory.CreateClient());
+                return new DiscoveryCache(authority, () => factory.CreateClient());
             });
 
             services.AddAuthentication(options =>
@@ -51,7 +53,7 @@ namespace demo_oidc_web_client
                 })
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "http://localhost:4700";
+                    options.Authority = authority;
                     options.RequireHttpsMetadata = false;
 
                     options.ClientId = "server.hybrid";

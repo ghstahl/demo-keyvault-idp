@@ -49,6 +49,9 @@ PrintElapsedTime
 Check "docker build (application)"
 
 docker build -f ./demo-keyvault-idp/Dockerfile --build-arg build_image=$ImageName -t demo-keyvault-idp .
+docker build -f ./demo-oidc-web-client/Dockerfile --build-arg build_image=$ImageName -t demo-oidc-web-client .
+ 
+
 # docker build -f ./ClientConfigurationService/Dockerfile -t dotnetcore/clientconfigurationservice .
 # docker build -f ./TokenExchangeTrusedContainer/Dockerfile -t dotnetcore/tokenexchangetrusedcontainer .
 

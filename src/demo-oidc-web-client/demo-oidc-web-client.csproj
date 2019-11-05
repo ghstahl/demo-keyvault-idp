@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>demo_oidc_web_client</RootNamespace>
+    <UserSecretsId>fcd46fd7-7d75-42b6-a028-aa132f59f082</UserSecretsId>
   </PropertyGroup>
 
 
