@@ -6,7 +6,7 @@ services:
       networks:
         - webproxy 
       ports:
-        - 4700:80
+        - 5900:80
       environment:
         - ASPNETCORE_ENVIRONMENT=Production
         - Identity__AzureAd__ClientId=${Identity_AzureAd_ClientId}
@@ -19,3 +19,4 @@ services:
 networks:
   webproxy:
     driver: bridge
+
