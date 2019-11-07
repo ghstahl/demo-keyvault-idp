@@ -95,5 +95,6 @@ namespace XUnitTest_JWT
 
             return claimsPrincipal.Identity.IsAuthenticated;
         }
+        
     }
  }

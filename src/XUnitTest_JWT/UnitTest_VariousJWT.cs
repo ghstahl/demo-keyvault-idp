@@ -16,7 +16,7 @@ namespace XUnitTest_JWT
         [Fact]
         public void JWT_Ecdsa_Microsoft()
         {
-            var (privateKey, publicKey) = ECDsaMicrosoft.GenerateKeys("MyKey");
+            var (privateKey, publicKey,alg) = ECDsaMicrosoft.GenerateKeys("MyKey");
             var credentials = ECDsaMicrosoft.CreateSigningCredentials(privateKey);
             var issuerSigningKey = ECDsaMicrosoft.CreateSecurityKey(publicKey);
 
@@ -59,6 +59,7 @@ namespace XUnitTest_JWT
             };
             act.Should().NotThrow();
 
+            var jwk = ECDsaMicrosoft.CreateJsonWebKey(issuerSigningKey);
         }
 
         [Fact]
