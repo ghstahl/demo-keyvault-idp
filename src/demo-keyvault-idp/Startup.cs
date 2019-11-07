@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CorrelationId;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
+using KeyVaultBackground;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,10 +34,14 @@ namespace DemoKeyVaultIDP
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
+            // Add the service required for using options.
+            services.AddOptions();
+
+            services.AddMemoryCache();
             services.AddCorrelationId();
             services.AddCorrelationEnricher();
-            services.AddOptions();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             var identityServerBuilder =services.AddIdentityServer(options =>
@@ -44,8 +50,9 @@ namespace DemoKeyVaultIDP
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseSuccessEvents = true;
+                options.InputLengthRestrictions.AuthorizationCode = 2048;
             });
-
+            identityServerBuilder.AddJWTBasedAuthorizationCodeStore();
             identityServerBuilder.AddInMemoryApiResources(Config.GetApis());
             identityServerBuilder.AddInMemoryIdentityResources(Config.GetIdentityResources());
             identityServerBuilder.AddInMemoryClients(Config.GetClients());
@@ -60,6 +67,11 @@ namespace DemoKeyVaultIDP
                 var pfxBytes = Convert.FromBase64String(key);
                 var cert = new X509Certificate2(pfxBytes, (string)null, X509KeyStorageFlags.MachineKeySet);
                 identityServerBuilder.AddSigningCredential(cert);
+                services.Configure<FileSystemConfigFetchOptions>(myOptions =>
+                {
+                    myOptions.ConfigPath = Path.Combine(_currentEnvironment.ContentRootPath, "ExternalConfigs/Development/ECDsa.Config.json");
+                });
+                services.AddHostedService<FileSystemConfigFetchHostedService>();
             }
             else
             {

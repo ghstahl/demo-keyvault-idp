@@ -1,3 +1,4 @@
+using ECDsaMicrosoft;
 using FluentAssertions;
 using Microsoft.IdentityModel.Tokens;
 using Org.BouncyCastle.Asn1.Sec;
@@ -16,9 +17,9 @@ namespace XUnitTest_JWT
         [Fact]
         public void JWT_Ecdsa_Microsoft()
         {
-            var (privateKey, publicKey,alg) = ECDsaMicrosoft.GenerateKeys("MyKey");
-            var credentials = ECDsaMicrosoft.CreateSigningCredentials(privateKey);
-            var issuerSigningKey = ECDsaMicrosoft.CreateSecurityKey(publicKey);
+            var (privateKey, publicKey,alg) = ECDsaMicrosoft.ECDSA.GenerateKeys("MyKey");
+            var credentials = ECDsaMicrosoft.ECDSA.CreateSigningCredentials(privateKey,"0");
+            var issuerSigningKey = ECDsaMicrosoft.ECDSA.CreateSecurityKey(publicKey);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var symmetricKey = Guid.NewGuid().ToByteArray();
@@ -59,7 +60,7 @@ namespace XUnitTest_JWT
             };
             act.Should().NotThrow();
 
-            var jwk = ECDsaMicrosoft.CreateJsonWebKey(issuerSigningKey);
+            var jwk = ECDsaMicrosoft.ECDSA.CreateJsonWebKey(issuerSigningKey);
         }
 
         [Fact]

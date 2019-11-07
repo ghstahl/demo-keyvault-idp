@@ -20,7 +20,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serilog.Enrichers.Correlati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demo-oidc-web-client", "demo-oidc-web-client\demo-oidc-web-client.csproj", "{BA4F50A6-8DB3-4CB6-B647-7E5F74C1BDF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "external-user-store", "external-user-store\external-user-store.csproj", "{0D5DE240-75DB-4C03-B034-01884CE2CBC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "external-user-store", "external-user-store\external-user-store.csproj", "{0D5DE240-75DB-4C03-B034-01884CE2CBC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfContained.AuthorizationStore", "SelfContained.AuthorizationStore\SelfContained.AuthorizationStore.csproj", "{A275062A-F13A-4F46-803F-FAF994A40067}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTest_JWT", "XUnitTest_JWT\XUnitTest_JWT.csproj", "{9C44B91C-7138-419B-AE76-4A60EBCDC0F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyVaultBackground", "KeyVaultBackground\KeyVaultBackground.csproj", "{608CD493-04A6-4222-AD19-97ABCEA8A314}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECDsaMicrosoft", "ECDsaMicrosoft\ECDsaMicrosoft.csproj", "{EB41243B-D3EC-4731-A500-23D0560721D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +52,22 @@ Global
 		{0D5DE240-75DB-4C03-B034-01884CE2CBC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D5DE240-75DB-4C03-B034-01884CE2CBC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D5DE240-75DB-4C03-B034-01884CE2CBC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A275062A-F13A-4F46-803F-FAF994A40067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A275062A-F13A-4F46-803F-FAF994A40067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A275062A-F13A-4F46-803F-FAF994A40067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A275062A-F13A-4F46-803F-FAF994A40067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C44B91C-7138-419B-AE76-4A60EBCDC0F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C44B91C-7138-419B-AE76-4A60EBCDC0F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C44B91C-7138-419B-AE76-4A60EBCDC0F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C44B91C-7138-419B-AE76-4A60EBCDC0F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{608CD493-04A6-4222-AD19-97ABCEA8A314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{608CD493-04A6-4222-AD19-97ABCEA8A314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{608CD493-04A6-4222-AD19-97ABCEA8A314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{608CD493-04A6-4222-AD19-97ABCEA8A314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB41243B-D3EC-4731-A500-23D0560721D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB41243B-D3EC-4731-A500-23D0560721D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB41243B-D3EC-4731-A500-23D0560721D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB41243B-D3EC-4731-A500-23D0560721D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

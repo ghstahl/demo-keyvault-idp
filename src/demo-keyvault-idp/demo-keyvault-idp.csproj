@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\external-user-store\external-user-store.csproj" />
+    <ProjectReference Include="..\KeyVaultBackground\KeyVaultBackground.csproj" />
+    <ProjectReference Include="..\SelfContained.AuthorizationStore\SelfContained.AuthorizationStore.csproj" />
     <ProjectReference Include="..\Serilog.Enrichers.Correlation\Serilog.Enrichers.Correlation.csproj" />
   </ItemGroup>
 

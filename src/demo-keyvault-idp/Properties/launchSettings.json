@@ -18,7 +18,7 @@
     "DemoKeyVaultIDP": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://demo-keyvault-idp.127.0.0.1.xip.io:5900",
+      "launchUrl": "http://localhost:5900",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
