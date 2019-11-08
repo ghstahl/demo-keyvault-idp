@@ -16,6 +16,7 @@ using System.Security.Principal;
 using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using KeyVaultBackground;
+using IdentityServer4.Configuration;
 
 namespace SelfContained.AuthorizationStore
 {
@@ -25,24 +26,9 @@ namespace SelfContained.AuthorizationStore
     /// <typeparam name="T"></typeparam>
     public class DefaultGrantStore<T>
     {
-        const string Issuer = "me";
-        const string Audience = "me";
-        static string _key = null;
-        static string Key
-        {
-            get
-            {
-                if (_key == null)
-                {
-                    // TODO: Generate ramdom key
-                    //   _key = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
-                    _key = Guid.NewGuid().ToString("N");
-                }
-                return _key;
-
-            }
-        }
-
+        const string Issuer = "self";
+        const string Audience = "self";
+  
         private IMemoryCache _cache;
 
         /// <summary>
@@ -81,7 +67,8 @@ namespace SelfContained.AuthorizationStore
         /// <param name="handleGenerationService">The handle generation service.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="System.ArgumentNullException">grantType</exception>
-        protected DefaultGrantStore(string grantType,
+        protected DefaultGrantStore(
+            string grantType,
             IPersistedGrantStore store,
             IPersistentGrantSerializer serializer,
             IHandleGenerationService handleGenerationService,
@@ -128,40 +115,26 @@ namespace SelfContained.AuthorizationStore
         /// <returns></returns>
         protected virtual async Task<T> GetItemAsync(string key)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var validationParameters = GetValidationParameters();
 
-            SecurityToken validatedToken;
-            var principal = tokenHandler.ValidateToken(key, validationParameters, out validatedToken);
-
-            var cc = (from claim in principal.Claims
-                      where claim.Type == "code"
-                      select claim).FirstOrDefault();
-
-            var payload = JsonConvert.DeserializeObject<AuthorizationCodeHandle>(cc.Value);
-
-            var dd = Serializer.Deserialize<T>(cc.Value);
-            return dd;
-
-            var hashedKey = GetHashedKey(key);
-
-            var grant = await Store.GetAsync(hashedKey);
-            if (grant != null && grant.Type == GrantType)
+            try
             {
-                try
-                {
-                    return Serializer.Deserialize<T>(grant.Data);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex, "Failed to deserialize JSON from grant store.");
-                }
-            }
-            else
-            {
-                Logger.LogDebug("{grantType} grant with value: {key} not found in store.", GrantType, key);
-            }
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var validationParameters = GetValidationParameters();
 
+                SecurityToken validatedToken;
+                var principal = tokenHandler.ValidateToken(key, validationParameters, out validatedToken);
+
+                var code = (from claim in principal.Claims
+                          where claim.Type == "code"
+                          select claim).FirstOrDefault();
+
+                var payload = Serializer.Deserialize<T>(code.Value);
+                return payload;
+            }
+            catch(Exception ex)
+            {
+                Logger.LogError(ex, "Failed to deserialize JSON from grant store.");
+            }
             return default(T);
         }
 
@@ -208,6 +181,11 @@ namespace SelfContained.AuthorizationStore
                 IssuerSigningKey = issuerSigningKey // The same key as the one that generate the token
             };
         }
+        class Minimal
+        {
+            public string N { get; set; }
+            public string S { get; set; }
+        }
         /// <summary>
         /// Stores the item.
         /// </summary>
@@ -222,12 +200,10 @@ namespace SelfContained.AuthorizationStore
         {
             key = GetHashedKey(key);
 
-           
             var credentialsECDsa = ECDsaMicrosoft.ECDSA.CreateSigningCredentials(_set.Set[0].PrivateKey,"0");
 
             var json = Serializer.Serialize(item);
             var payload = JsonConvert.DeserializeObject<AuthorizationCodeHandle>(json);
-        
 
             var secToken = new JwtSecurityToken(
                 signingCredentials: credentialsECDsa,
@@ -241,18 +217,6 @@ namespace SelfContained.AuthorizationStore
 
             var handler = new JwtSecurityTokenHandler();
             var jwt = handler.WriteToken(secToken);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var validationParameters = GetValidationParameters();
-
-            SecurityToken validatedToken;
-            var principal = tokenHandler.ValidateToken(jwt, validationParameters, out validatedToken);
-
-            var cc = (from claim in principal.Claims
-                     where claim.Type == "code"
-                     select claim).FirstOrDefault();
-
-            payload = JsonConvert.DeserializeObject<AuthorizationCodeHandle>(cc.Value);
 
             /*
                         var privateKey = Token.GetPrivateKey();

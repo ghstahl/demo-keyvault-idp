@@ -39,9 +39,6 @@ namespace SelfContained.AuthorizationStore
 
         [JsonProperty("Value")]
         public virtual string Value { get; set; }
-
-        [JsonProperty("ValueType")]
-        public virtual Uri ValueType { get; set; }
     }
 
     public partial class AuthorizationCodeHandle
@@ -54,9 +51,6 @@ namespace SelfContained.AuthorizationStore
 
         [JsonProperty("ClientId")]
         public virtual string ClientId { get; set; }
-
-        [JsonProperty("WasConsentShown")]
-        public virtual bool WasConsentShown { get; set; }
 
         [JsonProperty("IsOpenId")]
         public virtual bool IsOpenId { get; set; }
@@ -76,12 +70,6 @@ namespace SelfContained.AuthorizationStore
         [JsonProperty("SessionId")]
         public virtual string SessionId { get; set; }
 
-        [JsonProperty("CodeChallenge")]
-        public virtual string CodeChallenge { get; set; }
-
-        [JsonProperty("CodeChallengeMethod")]
-        public virtual string CodeChallengeMethod { get; set; }
-        
         [JsonProperty("Subject")]
         public virtual Subject Subject { get; set; }
         

@@ -3,8 +3,11 @@ using FluentAssertions;
 using Microsoft.IdentityModel.Tokens;
 using Org.BouncyCastle.Asn1.Sec;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,8 +15,55 @@ using Xunit;
 
 namespace XUnitTest_JWT
 {
+    
+    [Serializable]
+    public class Minimal
+    {
+        public string A { get; set; }
+        public IList<string> Names { get; set; }
+    }
     public class UnitTest_VariousJWT
     {
+        private static TData DeserializeFromString<TData>(string settings)
+        {
+            byte[] b = Convert.FromBase64String(settings);
+            using (var stream = new MemoryStream(b))
+            {
+                var formatter = new BinaryFormatter();
+                stream.Seek(0, SeekOrigin.Begin);
+                return (TData)formatter.Deserialize(stream);
+            }
+        }
+
+        private static string SerializeToString<TData>(TData settings)
+        {
+            using (var stream = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(stream, settings);
+                stream.Flush();
+                stream.Position = 0;
+                return Convert.ToBase64String(stream.ToArray());
+            }
+        }
+
+        [Fact]
+        public void SerializeMinimal()
+        {
+            var minimal = new Minimal
+            {
+                A = "Test",
+                Names = new List<string>()
+                {
+                    "A","B"
+                }
+            };
+            var token = SerializeToString(minimal);
+            var got = DeserializeFromString<Minimal>(token);
+            minimal.A.Should().BeEquivalentTo(got.A);
+
+        }
+
         [Fact]
         public void JWT_Ecdsa_Microsoft()
         {
